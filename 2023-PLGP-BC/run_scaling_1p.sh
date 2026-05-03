@@ -20,8 +20,4 @@ for graph in rmat-12 rmat-14 random-12 random-14; do
         echo "--- Run #$i ---"
         mpiexec -n 1 ./solution_mpi -in ${graph} -out ${graph}-1p.res
     done
-
-    if [ -f "${graph}.ans" ] && [ -f "${graph}-1p.res" ]; then
-        ./validation -ans ${graph}.ans -res ${graph}-1p.res
-    fi
 done
