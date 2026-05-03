@@ -4,7 +4,7 @@
 #BSUB -n 2
 #BSUB -R "span[ptile=1]"
 #BSUB -m "polus-c3-ib polus-c4-ib"
-#BSUB -gpu "num=1:mode=shared"
+#BSUB -gpu "num=2:mode=shared"
 #BSUB -o scaling_2p_%J.out
 #BSUB -e scaling_2p_%J.err
 
