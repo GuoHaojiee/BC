@@ -1,24 +1,36 @@
 #!/bin/bash
-#BSUB -J bc_scale_2p_r14
+#BSUB -J bc_scaling_2p
 #BSUB -W 00:30
 #BSUB -n 2
-#BSUB -R "span[ptile=2]"
+#BSUB -R "span[ptile=1]"
 #BSUB -m "polus-c3-ib polus-c4-ib"
-#BSUB -gpu "num=2:mode=shared"
-#BSUB -o scaling_2p_r14_%J.out
-#BSUB -e scaling_2p_r14_%J.err
+#BSUB -gpu "num=1:mode=shared"
+#BSUB -o scaling_2p_%J.out
+#BSUB -e scaling_2p_%J.err
 
-cd ~/Brandes-algorithm-cuda/2023-PLGP-BC
 module load SpectrumMPI
 
-NPROC=2
-GRAPH=rmat-14
-echo "=== 强扩展性：nproc=${NPROC} / 1 节点 / 2 GPU ==="
-echo "图：${GRAPH}，开始：$(date)"
+echo "================================================================"
+echo "  强扩展性测试：nproc=2   (c3+c4 各 1 进程，强制跨节点 IB)"
+echo "  开始时间：$(date)"
+echo "  主机：$(hostname)"
+echo "================================================================"
 
-for i in 1 2 3; do
-    echo "--- Run $i ---"
-    mpiexec -n ${NPROC} ./solution_mpi -in ${GRAPH} -out ${GRAPH}-${NPROC}p-r${i}.res
+for graph in rmat-12 rmat-14 random-12 random-14; do
+    echo ""
+    echo "############# 图：${graph}  (nproc=2) #############"
+    if [ ! -f "${graph}" ]; then
+        echo "!!! 文件 ${graph} 不存在，跳过 !!!"
+        continue
+    fi
+    mpiexec -n 2 ./solution_mpi -in ${graph} -out ${graph}-2p.res
+    if [ -f "${graph}.ans" ] && [ -f "${graph}-2p.res" ]; then
+        echo "--- validation [${graph}, 2p] ---"
+        ./validation -ans ${graph}.ans -res ${graph}-2p.res
+    fi
 done
 
-echo "SCALING nproc=${NPROC} graph=${GRAPH} done at $(date)"
+echo ""
+echo "================================================================"
+echo "  完成时间：$(date)"
+echo "================================================================"

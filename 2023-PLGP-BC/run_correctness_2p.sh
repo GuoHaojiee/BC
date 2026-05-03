@@ -8,7 +8,6 @@
 #BSUB -o correctness_2p_%J.out
 #BSUB -e correctness_2p_%J.err
 
-cd ~/Brandes-algorithm-cuda/2023-PLGP-BC
 module load SpectrumMPI
 
 echo "=== 正确性测试：2 进程 / 1 节点 ==="
