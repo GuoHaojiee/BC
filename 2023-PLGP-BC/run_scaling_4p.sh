@@ -8,7 +8,7 @@
 #BSUB -o scaling_4p_r14_%J.out
 #BSUB -e scaling_4p_r14_%J.err
 
-cd ~/Brandes-algorithm-cuda/2023-PLGP-BC
+
 module load SpectrumMPI
 
 NPROC=4

@@ -2,18 +2,18 @@
 #BSUB -J bc_scale_2p_r14
 #BSUB -W 00:30
 #BSUB -n 2
-#BSUB -R "span[ptile=2]"
+#BSUB -R "span[ptile=1]"
 #BSUB -m "polus-c3-ib polus-c4-ib"
-#BSUB -gpu "num=2:mode=shared"
+#BSUB -gpu "num=1:mode=shared"
 #BSUB -o scaling_2p_r14_%J.out
 #BSUB -e scaling_2p_r14_%J.err
 
-cd ~/Brandes-algorithm-cuda/2023-PLGP-BC
+
 module load SpectrumMPI
 
 NPROC=2
 GRAPH=rmat-14
-echo "=== 强扩展性：nproc=${NPROC} / 1 节点 / 2 GPU ==="
+echo "=== 强扩展性：nproc=${NPROC} / 2 节点 / 2 GPU (ptile=1) ==="
 echo "图：${GRAPH}，开始：$(date)"
 
 for i in 1 2 3; do
